@@ -1,0 +1,4 @@
+../grbl/crossbar.c:26:16:xbar_fn_to_axismask	6
+../grbl/crossbar.c:98:6:xbar_set_homing_source	2
+../grbl/crossbar.c:109:17:xbar_get_homing_source	1
+../grbl/crossbar.c:115:17:xbar_get_homing_source_from_cycle	2

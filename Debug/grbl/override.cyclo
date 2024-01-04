@@ -1,0 +1,7 @@
+../grbl/override.c:35:15:enqueue_feed_override	2
+../grbl/override.c:46:9:get_feed_override	2
+../grbl/override.c:59:15:enqueue_spindle_override	2
+../grbl/override.c:70:9:get_spindle_override	2
+../grbl/override.c:83:15:enqueue_coolant_override	2
+../grbl/override.c:94:9:get_coolant_override	2
+../grbl/override.c:107:6:flush_override_buffers	1

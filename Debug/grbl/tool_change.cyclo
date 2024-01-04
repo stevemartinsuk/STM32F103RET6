@@ -1,0 +1,15 @@
+../grbl/tool_change.c:53:13:on_probe_completed	3
+../grbl/tool_change.c:63:13:change_completed	6
+../grbl/tool_change.c:91:13:reset	4
+../grbl/tool_change.c:111:13:restore	7
+../grbl/tool_change.c:150:13:execute_warning	1
+../grbl/tool_change.c:157:13:execute_restore	2
+../grbl/tool_change.c:174:13:execute_probe	10
+../grbl/tool_change.c:241:22:trap_control_cycle_start	5
+../grbl/tool_change.c:259:22:trap_stream_cycle_start	7
+../grbl/tool_change.c:281:22:on_toolchange_ack	1
+../grbl/tool_change.c:290:13:tool_select	2
+../grbl/tool_change.c:298:22:tool_change	14
+../grbl/tool_change.c:403:6:tc_init	7
+../grbl/tool_change.c:433:6:tc_clear_tlo_reference	5
+../grbl/tool_change.c:456:15:tc_probe_workpiece	13

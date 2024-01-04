@@ -1,0 +1,3 @@
+../grbl/errors.c:117:6:errors_register	16	static
+../grbl/errors.c:123:18:errors_get_details	4	static
+../grbl/errors.c:128:13:errors_get_description	32	static

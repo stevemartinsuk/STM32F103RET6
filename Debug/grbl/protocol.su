@@ -1,0 +1,13 @@
+../grbl/protocol.c:68:6:protocol_enqueue_gcode	24	static
+../grbl/protocol.c:83:13:recheck_line	24	static
+../grbl/protocol.c:127:6:protocol_main_loop	24	static
+../grbl/protocol.c:357:6:protocol_buffer_synchronize	16	static
+../grbl/protocol.c:374:6:protocol_auto_cycle_start	8	static
+../grbl/protocol.c:393:6:protocol_execute_realtime	16	static
+../grbl/protocol.c:411:13:protocol_poll_cmd	16	static
+../grbl/protocol.c:436:6:protocol_exec_rt_system	48	static
+../grbl/protocol.c:768:13:protocol_exec_rt_suspend	16	static
+../grbl/protocol.c:805:15:protocol_enqueue_realtime_command	32	static
+../grbl/protocol.c:1015:15:protocol_enqueue_rt_command	24	static
+../grbl/protocol.c:1030:13:protocol_execute_rt_commands	16	static
+../grbl/protocol.c:1046:6:protocol_execute_noop	16	static

@@ -1,0 +1,8 @@
+../grbl/grbllib.c:83:6:dummy_bool_handler	1
+../grbl/grbllib.c:88:6:reset_handler	1
+../grbl/grbllib.c:95:13:dummy_irq_claim	1
+../grbl/grbllib.c:100:13:report_driver_error	1
+../grbl/grbllib.c:112:13:auto_realtime_report	3
+../grbl/grbllib.c:130:32:get_homing_status	1
+../grbl/grbllib.c:142:32:get_homing_status2	1
+../grbl/grbllib.c:155:5:grbl_enter	27

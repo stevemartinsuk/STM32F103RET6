@@ -1,0 +1,3 @@
+../grbl/alarms.c:59:6:alarms_register	16	static
+../grbl/alarms.c:65:18:alarms_get_details	4	static
+../grbl/alarms.c:70:13:alarms_get_description	32	static

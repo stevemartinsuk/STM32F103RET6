@@ -1,0 +1,13 @@
+../grbl/kinematics/corexy.c:42:23:corexy_convert_to_a_motor_steps	16	static
+../grbl/kinematics/corexy.c:47:23:corexy_convert_to_b_motor_steps	16	static
+../grbl/kinematics/corexy.c:53:15:corexy_convert_array_steps_to_mpos	32	static
+../grbl/kinematics/corexy.c:67:22:transform_from_cartesian	32	static
+../grbl/kinematics/corexy.c:80:21:corexy_limits_get_axis_mask	16	static
+../grbl/kinematics/corexy.c:86:13:corexy_limits_set_target_pos	24	static
+../grbl/kinematics/corexy.c:108:13:corexy_limits_set_machine_positions	32	static
+../grbl/kinematics/corexy.c:153:21:get_distance	32	static
+../grbl/kinematics/corexy.c:167:15:kinematics_segment_line	48	static
+../grbl/kinematics/corexy.c:195:13:homing_cycle_validate	16	static
+../grbl/kinematics/corexy.c:200:14:homing_cycle_get_feedrate	16	static
+../grbl/kinematics/corexy.c:205:13:report_options	16	static
+../grbl/kinematics/corexy.c:214:6:corexy_init	4	static

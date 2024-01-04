@@ -1,0 +1,14 @@
+../grbl/stepper2.c:82:13:st_motor_config	1
+../grbl/stepper2.c:94:13:st2_reset	2
+../grbl/stepper2.c:110:13:st2_settings_changed	2
+../grbl/stepper2.c:128:20:st2_set_axis_setting_unit	11
+../grbl/stepper2.c:165:20:st2_setting_get_description	14
+../grbl/stepper2.c:211:14:st2_motor_init	5
+../grbl/stepper2.c:261:7:st2_motor_set_speed	11
+../grbl/stepper2.c:331:6:st2_motor_move	15
+../grbl/stepper2.c:413:9:st2_get_position	1
+../grbl/stepper2.c:425:6:st2_set_position	2
+../grbl/stepper2.c:441:6:st2_motor_run	18
+../grbl/stepper2.c:522:6:st2_motor_stop	5
+../grbl/stepper2.c:551:6:st2_motor_running	1
+../grbl/stepper2.c:560:6:st2_motor_cruising	3

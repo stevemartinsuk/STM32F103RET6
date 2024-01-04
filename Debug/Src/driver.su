@@ -1,0 +1,49 @@
+../Drivers/CMSIS/Include/cmsis_gcc.h:129:27:__enable_irq	4	static,ignoring_inline_asm
+../Drivers/CMSIS/Include/cmsis_gcc.h:140:27:__disable_irq	4	static,ignoring_inline_asm
+../Drivers/CMSIS/Include/core_cm3.h:1511:22:__NVIC_EnableIRQ	16	static
+../Drivers/CMSIS/Include/core_cm3.h:1639:22:__NVIC_SetPriority	16	static
+R:/Software Development/STM32/GRBL Driver STM32F103RET6_clean/grbl/motor_pins.h:1046:13:motor_iterator	24	static
+R:/Software Development/STM32/GRBL Driver STM32F103RET6_clean/grbl/motor_pins.h:1075:24:get_limits_cap	16	static
+R:/Software Development/STM32/GRBL Driver STM32F103RET6_clean/grbl/motor_pins.h:1142:23:get_home_cap	16	static
+R:/Software Development/STM32/GRBL Driver STM32F103RET6_clean/grbl/stepdir_map.h:583:13:stepdirmap_init	24	static
+../Src/driver.c:317:13:driver_delay	24	static
+../Src/driver.c:332:13:stepperEnable	16	static
+../Src/driver.c:365:13:stepperWakeUp	8	static
+../Src/driver.c:376:13:stepperGoIdle	16	static
+../Src/driver.c:383:13:stepperCyclesPerTickPrescaled	16	static
+../Src/driver.c:623:13:stepperPulseStart	24	static
+../Src/driver.c:637:13:stepperPulseStartDelayed	24	static
+../Src/driver.c:661:13:limitsEnable	40	static
+../Src/driver.c:682:31:limitsGetState	24	static
+../Src/driver.c:760:26:systemGetState	16	static
+../Src/driver.c:811:13:probeConfigure	16	static
+../Src/driver.c:819:22:probeGetState	16	static
+../Src/driver.c:835:20:spindle_off	4	static
+../Src/driver.c:840:20:spindle_on	4	static
+../Src/driver.c:845:20:spindle_dir	16	static
+../Src/driver.c:855:13:spindleSetState	24	static
+../Src/driver.c:872:13:spindleSetSpeed	16	static
+../Src/driver.c:909:22:spindleGetPWM	16	static
+../Src/driver.c:915:13:spindleSetStateVariable	24	static
+../Src/driver.c:933:6:spindleConfig	48	static
+../Src/driver.c:992:24:spindleGetState	24	static
+../Src/driver.c:1010:13:coolantSetState	16	static
+../Src/driver.c:1020:24:coolantGetState	16	static
+../Src/driver.c:1035:13:bitsSetAtomic	16	static,ignoring_inline_asm
+../Src/driver.c:1042:22:bitsClearAtomic	24	static,ignoring_inline_asm
+../Src/driver.c:1051:22:valueSetAtomic	24	static,ignoring_inline_asm
+../Src/driver.c:1075:17:getElapsedTicks	4	static
+../Src/driver.c:1080:6:gpio_irq_enable	16	static
+../Src/driver.c:1099:6:settings_changed	64	static
+../Src/driver.c:1361:14:port2char	16	static
+../Src/driver.c:1370:13:enumeratePins	32	static
+../Src/driver.c:1465:22:jtag_enable	24	static
+../Src/driver.c:1477:13:driver_setup	56	static
+../Src/driver.c:1595:6:driver_init	32	static
+../Src/driver.c:1856:6:TIM2_IRQHandler	8	static
+../Src/driver.c:1883:6:TIM3_IRQHandler	16	static
+../Src/driver.c:1897:20:debounce_start	4	static
+../Src/driver.c:1908:6:TIM4_IRQHandler	16	static
+../Src/driver.c:2099:6:EXTI9_5_IRQHandler	24	static
+../Src/driver.c:2147:6:EXTI15_10_IRQHandler	24	static
+../Src/driver.c:2194:6:HAL_IncTick	8	static

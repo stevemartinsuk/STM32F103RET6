@@ -1,0 +1,11 @@
+../grbl/nvs_buffer.c:126:23:ram_get_byte	16	static
+../grbl/nvs_buffer.c:131:20:ram_put_byte	16	static
+../grbl/nvs_buffer.c:139:30:memcpy_to_ram	40	static
+../grbl/nvs_buffer.c:202:30:memcpy_from_ram	40	static
+../grbl/nvs_buffer.c:215:13:nvs_warning	16	static
+../grbl/nvs_buffer.c:221:6:nvs_buffer_alloc	8	static
+../grbl/nvs_buffer.c:231:6:nvs_buffer_free	8	static
+../grbl/nvs_buffer.c:241:6:nvs_buffer_init	16	static
+../grbl/nvs_buffer.c:286:15:nvs_alloc	24	static
+../grbl/nvs_buffer.c:314:6:nvs_buffer_sync_physical	32	static
+../grbl/nvs_buffer.c:389:11:nvs_buffer_get_physical	4	static

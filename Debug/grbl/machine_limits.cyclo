@@ -1,0 +1,16 @@
+../grbl/machine_limits.c:42:25:limit_signals_merge	1
+../grbl/machine_limits.c:52:32:homing_signals_select	3
+../grbl/machine_limits.c:82:15:limit_interrupt_handler	3
+../grbl/machine_limits.c:114:6:limits_set_work_envelope	7
+../grbl/machine_limits.c:170:13:limits_pull_off	9
+../grbl/machine_limits.c:260:13:homing_cycle	49
+../grbl/machine_limits.c:515:15:limits_go_home	9
+../grbl/machine_limits.c:550:6:limits_soft_check	6
+../grbl/machine_limits.c:576:6:limits_set_homing_axes	2
+../grbl/machine_limits.c:590:6:limits_homing_required	7
+../grbl/machine_limits.c:597:14:get_homing_rate	2
+../grbl/machine_limits.c:603:13:check_travel_limits	11
+../grbl/machine_limits.c:619:13:check_arc_travel_limits	35
+../grbl/machine_limits.c:716:13:clip_3d_target	7
+../grbl/machine_limits.c:754:13:apply_jog_limits	13
+../grbl/machine_limits.c:784:6:limits_init	1

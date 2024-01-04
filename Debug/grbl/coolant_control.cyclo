@@ -1,0 +1,2 @@
+../grbl/coolant_control.c:35:6:coolant_set_state	3
+../grbl/coolant_control.c:45:6:coolant_sync	3

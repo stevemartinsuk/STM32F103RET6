@@ -1,0 +1,7 @@
+../Src/openpnp.c:39:21:userMCodeCheck	16	static
+../Src/openpnp.c:47:22:userMCodeValidate	24	static
+../Src/openpnp.c:120:13:report_position	112	static
+../Src/openpnp.c:163:13:report_temperature	32	static
+../Src/openpnp.c:169:13:userMCodeExecute	48	static
+../Src/openpnp.c:237:13:onReportOptions	16	static
+../Src/openpnp.c:245:6:openpnp_init	8	static

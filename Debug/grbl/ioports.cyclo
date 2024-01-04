@@ -1,0 +1,16 @@
+../grbl/ioports.c:50:16:ioports_count	3
+../grbl/ioports.c:69:9:ioports_available	12
+../grbl/ioports.c:103:6:ioport_claim	17
+../grbl/ioports.c:141:6:ioport_can_claim_explicit	3
+../grbl/ioports.c:146:6:ioports_enumerate	8
+../grbl/ioports.c:165:14:get_pnum	3
+../grbl/ioports.c:170:6:ioports_add	25
+../grbl/ioports.c:260:9:ioports_map_reverse	4
+../grbl/ioports.c:280:29:invert_pwm	2
+../grbl/ioports.c:291:6:ioports_precompute_pwm_values	6
+../grbl/ioports.c:319:15:ioports_compute_pwm_value	5
+../grbl/ioports.c:340:13:is_setting_available	8
+../grbl/ioports.c:363:22:aux_set_invert_out	3
+../grbl/ioports.c:379:17:aux_get_invert_out	1
+../grbl/ioports.c:406:13:ioport_settings_load	2
+../grbl/ioports.c:425:6:ioports_add_settings	3

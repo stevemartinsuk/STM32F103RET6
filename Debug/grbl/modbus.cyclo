@@ -1,0 +1,8 @@
+../grbl/modbus.c:33:6:modbus_isup	3
+../grbl/modbus.c:45:6:modbus_enabled	1
+../grbl/modbus.c:50:6:modbus_flush_queue	3
+../grbl/modbus.c:59:6:modbus_set_silence	2
+../grbl/modbus.c:65:6:modbus_send	5
+../grbl/modbus.c:75:10:modbus_read_u16	1
+../grbl/modbus.c:80:6:modbus_write_u16	1
+../grbl/modbus.c:86:6:modbus_register_api	4
