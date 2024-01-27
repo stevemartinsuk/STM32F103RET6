@@ -25,6 +25,24 @@
 
 
 #define SERIAL_PORT             1 // GPIOA: TX = 9, RX = 10
+#define DEFAULT_HOMING_ENABLE   On
+//#define DEFAULT_HOMING_DIR_MASK 1
+//#define DEFAULT_HOMING_CYCLE_0  (X_AXIS_BIT)
+//#define DEFAULT_HOMING_CYCLE_1  (Y_AXIS_BIT)
+//#define DEFAULT_HOMING_CYCLE_2  0
+//#define DEFAULT_PROBE_SIGNAL_INVERT 1
+//#define DEFAULT_DIR_SIGNALS_INVERT_MASK 3
+//#define DEFAULT_X_STEPS_PER_MM 80.0f
+//#define DEFAULT_Y_STEPS_PER_MM 80.0f
+//#define DEFAULT_Z_STEPS_PER_MM 80.0f
+//#define DEFAULT_A_STEPS_PER_MM 80.0f
+//#define DEFAULT_X_MAX_RATE 10000
+//#define DEFAULT_Y_MAX_RATE 10000
+//#define DEFAULT_X_ACCELERATION 200
+//#define DEFAULT_Y_ACCELERATION 200
+//#define N_AXIS 4
+//#define COREXY On
+
 
 
 #if N_ABC_MOTORS > 1 || N_GANGED
@@ -59,7 +77,7 @@
 #define LIMIT_INMODE            GPIO_MAP
 
 // Define ganged axis or A axis step pulse and step direction output pins.
-#if N_ABC_MOTORS == 1
+#if N_ABC_MOTORS == 1 //fucking refusing to detect the correct declaration for no reason
 #define M3_AVAILABLE
 #define M3_STEP_PORT            GPIOB
 #define M3_STEP_PIN             3
@@ -75,24 +93,24 @@
 #define SPINDLE_PWM_PORT_BASE   GPIOA_BASE
 #define SPINDLE_PWM_PIN         8
 #else
-#define AUXOUTPUT0_PORT         GPIOB
-#define AUXOUTPUT0_PIN          2
+#define AUXOUTPUT0_PORT         GPIOA
+#define AUXOUTPUT0_PIN          0
 #endif
 
 #if DRIVER_SPINDLE_DIR_ENABLE
 #define SPINDLE_DIRECTION_PORT  GPIOB
 #define SPINDLE_DIRECTION_PIN   4
 #else
-#define AUXOUTPUT1_PORT         GPIOB
-#define AUXOUTPUT1_PIN          10
+#define AUXOUTPUT1_PORT         GPIOA
+#define AUXOUTPUT1_PIN          1
 #endif
 
 #if DRIVER_SPINDLE_ENABLE
 #define SPINDLE_ENABLE_PORT     GPIOB
 #define SPINDLE_ENABLE_PIN      1
 #else
-#define AUXOUTPUT2_PORT         GPIOB
-#define AUXOUTPUT2_PIN          11
+#define AUXOUTPUT2_PORT         GPIOA
+#define AUXOUTPUT2_PIN          2
 #endif
 
 // Define flood and mist coolant enable output pins.

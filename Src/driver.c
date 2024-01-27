@@ -31,10 +31,6 @@
 #include "driver.h"
 #include "serial.h"
 
-#if !defined(HAS_IOPORTS) && defined(SAFETY_DOOR_PIN)
-#define SAFETY_DOOR_BIT (1<<SAFETY_DOOR_PIN)
-#endif
-
 #include "grbl/protocol.h"
 #include "grbl/machine_limits.h"
 #include "grbl/motor_pins.h"
@@ -52,7 +48,7 @@
 #endif
 
 #if USB_SERIAL_CDC
-#include "usb_serial.h"
+#include <usb_serial.h>
 #endif
 
 #if EEPROM_ENABLE
@@ -68,12 +64,7 @@
 #endif
 
 #if FLASH_ENABLE
-#include "flash.h"
-#endif
-
-#ifndef HAS_IOPORTS
-#undef AUXINPUT_MASK
-#define AUXINPUT_MASK 0
+#include <flash.h_ref>
 #endif
 
 #define DRIVER_IRQMASK (LIMIT_MASK|CONTROL_MASK|DEVICES_IRQ_MASK)
@@ -107,7 +98,7 @@ static input_signal_t inputpin[] = {
 #endif
     { .id = Input_FeedHold,       .port = FEED_HOLD_PORT,   .pin = FEED_HOLD_PIN,       .group = PinGroup_Control },
     { .id = Input_CycleStart,     .port = CYCLE_START_PORT, .pin = CYCLE_START_PIN,     .group = PinGroup_Control },
-#if defined(STM32F103xB) && SAFETY_DOOR_ENABLE
+#if SAFETY_DOOR_ENABLE
     { .id = Input_SafetyDoor,     .port = SAFETY_DOOR_PORT, .pin = SAFETY_DOOR_PIN,     .group = PinGroup_Control },
 #endif
 #ifdef PROBE_PIN
@@ -142,19 +133,17 @@ static input_signal_t inputpin[] = {
     { .id = Input_LimitC,         .port = C_LIMIT_PORT,     .pin = C_LIMIT_PIN,         .group = PinGroup_Limit },
 #endif
 // Aux input pins must be consecutive in this array
-#ifdef HAS_IOPORTS
-  #ifdef AUXINPUT0_PIN
+#ifdef AUXINPUT0_PIN
     { .id = Input_Aux0,           .port = AUXINPUT0_PORT,   .pin = AUXINPUT0_PIN,       .group = PinGroup_AuxInput },
-  #endif
-  #ifdef AUXINPUT1_PIN
+#endif
+#ifdef AUXINPUT1_PIN
     { .id = Input_Aux1,           .port = AUXINPUT1_PORT,   .pin = AUXINPUT1_PIN,       .group = PinGroup_AuxInput },
-  #endif
-  #ifdef AUXINPUT2_PIN
+#endif
+#ifdef AUXINPUT2_PIN
     { .id = Input_Aux2,           .port = AUXINPUT2_PORT,   .pin = AUXINPUT2_PIN,       .group = PinGroup_AuxInput },
-  #endif
-  #ifdef AUXINPUT3_PIN
+#endif
+#ifdef AUXINPUT3_PIN
     { .id = Input_Aux3,           .port = AUXINPUT3_PORT,   .pin = AUXINPUT3_PIN,       .group = PinGroup_AuxInput },
-  #endif
 #endif
 };
 
@@ -246,19 +235,17 @@ static output_signal_t outputpin[] = {
 #ifdef SD_CS_PORT
     { .id = Output_SdCardCS,        .port = SD_CS_PORT,             .pin = SD_CS_PIN,               .group = PinGroup_SdCard },
 #endif
-#ifdef HAS_IOPORTS
-  #ifdef AUXOUTPUT0_PORT
+#ifdef AUXOUTPUT0_PORT
     { .id = Output_Aux0,            .port = AUXOUTPUT0_PORT,        .pin = AUXOUTPUT0_PIN,          .group = PinGroup_AuxOutput },
-  #endif
-  #ifdef AUXOUTPUT1_PORT
+#endif
+#ifdef AUXOUTPUT1_PORT
     { .id = Output_Aux1,            .port = AUXOUTPUT1_PORT,        .pin = AUXOUTPUT1_PIN,          .group = PinGroup_AuxOutput },
-  #endif
-  #ifdef AUXOUTPUT2_PORT
+#endif
+#ifdef AUXOUTPUT2_PORT
     { .id = Output_Aux2,            .port = AUXOUTPUT2_PORT,        .pin = AUXOUTPUT2_PIN,          .group = PinGroup_AuxOutput },
-  #endif
-  #ifdef AUXOUTPUT3_PORT
+#endif
+#ifdef AUXOUTPUT3_PORT
     { .id = Output_Aux3,            .port = AUXOUTPUT3_PORT,        .pin = AUXOUTPUT3_PIN,          .group = PinGroup_AuxOutput },
-  #endif
 #endif
 };
 
@@ -278,7 +265,7 @@ static axes_signals_t next_step_outbits;
 static delay_t delay = { .ms = 1, .callback = NULL }; // NOTE: initial ms set to 1 for "resetting" systick timer on startup
 static on_unknown_sys_command_ptr on_unknown_sys_command;
 static debounce_t debounce;
-#ifndef STM32F103xB
+#ifndef STM32F103xE
 static periph_signal_t *periph_pins = NULL;
 #endif
 static probe_state_t probe = {
@@ -339,16 +326,6 @@ static void driver_delay (uint32_t ms, void (*callback)(void))
         }
     } else if(callback)
         callback();
-}
-
-static inline bool debounce_start (void)
-{
-    if(hal.driver_cap.software_debounce) {
-        DEBOUNCE_TIMER->EGR = TIM_EGR_UG;
-        DEBOUNCE_TIMER->CR1 |= TIM_CR1_CEN; // Start debounce timer (40ms)
-    }
-
-    return hal.driver_cap.software_debounce;
 }
 
 // Enable/disable stepper motors
@@ -787,14 +764,14 @@ static control_signals_t systemGetState (void)
     signals.value = settings.control_invert.mask;
 
 #if CONTROL_INMODE == GPIO_BITBAND
-  #if ESTOP_ENABLE
+#if ESTOP_ENABLE
     signals.e_stop = BITBAND_PERI(RESET_PORT->IDR, RESET_PIN);
-  #else
+#else
     signals.reset = BITBAND_PERI(CONTROL_PORT->IDR, RESET_PIN);
-  #endif
+#endif
     signals.feed_hold = BITBAND_PERI(CONTROL_PORT->IDR, FEED_HOLD_PIN);
     signals.cycle_start = BITBAND_PERI(CONTROL_PORT->IDR, CYCLE_START_PIN);
- #if SAFETY_DOOR_BIT
+ #ifdef SAFETY_DOOR_PIN
     signals.safety_door_ajar = BITBAND_PERI(CONTROL_PORT->IDR, SAFETY_DOOR_PIN);
  #endif
 #elif CONTROL_INMODE == GPIO_MAP
@@ -806,91 +783,25 @@ static control_signals_t systemGetState (void)
  #endif
     signals.feed_hold = (bits & FEED_HOLD_BIT) != 0;
     signals.cycle_start = (bits & CYCLE_START_BIT) != 0;
-  #if SAFETY_DOOR_BIT
+ #ifdef SAFETY_DOOR_PIN
     signals.safety_door_ajar = (bits & SAFETY_DOOR_BIT) != 0;
  #endif
 #else
-    signals.value &= ~(CONTROL_MASK >> CONTROL_INMODE);
-    signals.value |= (uint16_t)((CONTROL_PORT->IDR & CONTROL_MASK) >> CONTROL_INMODE);
+    signals.value = (uint8_t)((CONTROL_PORT->IDR & CONTROL_MASK) >> CONTROL_INMODE);
+ #ifdef SAFETY_DOOR_PIN
+ 	signals.safety_door_ajar = settings.control_invert.safety_door_ajar;
+ #endif
  #if ESTOP_ENABLE
     signals.e_stop = signals.reset;
     signals.reset = settings.control_invert.reset;
  #endif
 #endif
 
-#if defined(HAS_IOPORTS) && AUX_CONTROLS_ENABLED
-
-  #ifdef SAFETY_DOOR_PIN
-    if(aux_ctrl[AuxCtrl_SafetyDoor].debouncing)
-        signals.safety_door_ajar = !settings.control_invert.safety_door_ajar;
-    else
-        signals.safety_door_ajar = DIGITAL_IN(SAFETY_DOOR_PORT, SAFETY_DOOR_PIN);
-  #endif
-  #ifdef MOTOR_FAULT_PIN
-    signals.motor_fault = DIGITAL_IN(MOTOR_FAULT_PORT, MOTOR_FAULT_PIN);
-  #endif
-  #ifdef MOTOR_WARNING_PIN
-    signals.motor_warning = DIGITAL_IN(MOTOR_WARNING_PORT, MOTOR_WARNING_PIN);
-  #endif
-
-  #if AUX_CONTROLS_SCAN
-    uint_fast8_t i;
-    for(i = AUX_CONTROLS_SCAN; i < AuxCtrl_NumEntries; i++) {
-        if(aux_ctrl[i].enabled) {
-            signals.mask &= ~aux_ctrl[i].cap.mask;
-            if(hal.port.wait_on_input(Port_Digital, aux_ctrl[i].port, WaitMode_Immediate, 0.0f) == 1)
-                signals.mask |= aux_ctrl[i].cap.mask;
-        }
-    }
-  #endif
-
-#endif // HAS_IOPORTS && AUX_CONTROLS_ENABLED
-
     if(settings.control_invert.mask)
         signals.value ^= settings.control_invert.mask;
 
     return signals;
 }
-
-#if defined(HAS_IOPORTS) && AUX_CONTROLS_ENABLED
-
-static void aux_irq_handler (uint8_t port, bool state)
-{
-    uint_fast8_t i;
-    control_signals_t signals = systemGetState();
-
-    for(i = 0; i < AuxCtrl_NumEntries; i++) {
-        if(aux_ctrl[i].port == port) {
-            if(!aux_ctrl[i].debouncing) {
-                signals.mask |= aux_ctrl[i].cap.mask;
-                if(i == AuxCtrl_SafetyDoor)
-                    debounce.door = aux_ctrl[i].debouncing = debounce_start();
-            }
-        }
-    }
-
-    if(signals.mask)
-        hal.control.interrupt_callback(signals);
-}
-
-bool aux_claim (xbar_t *properties, uint8_t port, void *data)
-{
-    ((aux_ctrl_t *)data)->port = port;
-
-    return ioport_claim(Port_Digital, Port_Input, &((aux_ctrl_t *)data)->port, xbar_fn_to_pinname(((aux_ctrl_t *)data)->function));
-}
-
-static bool aux_claim_explicit (aux_ctrl_t *aux)
-{
-    if((aux->enabled = aux->port != 0xFF && ioport_claim(Port_Digital, Port_Input, &aux->port, xbar_fn_to_pinname(aux->function))))
-        hal.signals_cap.mask |= aux->cap.mask;
-    else
-        aux->port = 0xFF;
-
-    return aux->enabled;
-}
-
-#endif // HAS_IOPORTS && AUX_CONTROLS_ENABLED
 
 #ifdef PROBE_PIN
 
@@ -1442,16 +1353,9 @@ void settings_changed (settings_t *settings, settings_changed_flags_t changed)
             HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
         }
 #endif
-
-        hal.limits.enable(settings->limits.flags.hard_enabled, (axes_signals_t){0});
-
-#if defined(HAS_IOPORTS) && AUX_CONTROLS_ENABLED
-        for(i = 0; i < AuxCtrl_NumEntries; i++) {
-            if(aux_ctrl[i].enabled && aux_ctrl[i].irq_mode != IRQ_Mode_None)
-                hal.port.register_interrupt_handler(aux_ctrl[i].port, (settings->control_invert.mask & aux_ctrl[i].cap.mask) ? IRQ_Mode_Falling : IRQ_Mode_Rising, aux_irq_handler);
-        }
-#endif
     }
+
+    hal.limits.enable(settings->limits.flags.hard_enabled, (axes_signals_t){0});
 }
 
 static char *port2char (GPIO_TypeDef *port)
@@ -1494,7 +1398,7 @@ static void enumeratePins (bool low_level, pin_info_ptr pin_info, void *data)
         pin_info(&pin, data);
     };
 
-#ifndef STM32F103xB
+#ifndef STM32F103xE
 
     periph_signal_t *ppin = periph_pins;
 
@@ -1521,7 +1425,7 @@ static void enumeratePins (bool low_level, pin_info_ptr pin_info, void *data)
 #endif
 }
 
-#ifndef STM32F103xB
+#ifndef STM32F103xE
 
 void registerPeriphPin (const periph_pin_t *pin)
 {
@@ -1726,11 +1630,11 @@ bool driver_init (void)
     __HAL_AFIO_REMAP_SWJ_NOJTAG();
 
 #ifndef STM32F103xB
-    hal.info = "STM32F103RC";
+    hal.info = "STM32F103RE";
 #else
     hal.info = "STM32F103CB";
 #endif
-    hal.driver_version = "231228";
+    hal.driver_version = "231217";
     hal.driver_url = GRBL_URL "/STM32F1xx";
 #ifdef BOARD_NAME
     hal.board = BOARD_NAME;
@@ -1819,12 +1723,12 @@ bool driver_init (void)
     hal.set_value_atomic = valueSetAtomic;
     hal.get_elapsed_ticks = getElapsedTicks;
     hal.enumerate_pins = enumeratePins;
-#ifndef STM32F103xB
+#ifndef STM32F103xE
     hal.periph_port.register_pin = registerPeriphPin;
     hal.periph_port.set_pin_description = setPeriphPinDescription;
 #endif
 
-#ifdef STM32F103xB
+#ifdef STM32F103xE
   #if USB_SERIAL_CDC
     stream_connect(usbInit());
   #else
@@ -1856,7 +1760,7 @@ bool driver_init (void)
     hal.signals_cap.e_stop = On;
     hal.signals_cap.reset = Off;
 #endif
-#if SAFETY_DOOR_BIT
+#ifdef SAFETY_DOOR_PIN
     hal.signals_cap.safety_door_ajar = On;
 #endif
     hal.limits_cap = get_limits_cap();
@@ -1869,7 +1773,7 @@ bool driver_init (void)
     hal.driver_cap.limits_pull_up = On;
     hal.driver_cap.probe_pull_up = On;
 
-#ifdef HAS_IOPORTS
+#ifndef STM32F103xB
 
     uint32_t i;
     input_signal_t *input;
@@ -1884,18 +1788,6 @@ bool driver_init (void)
             input->bit = 1 << input->pin;
             input->cap.pull_mode = PullMode_UpDown;
             input->cap.irq_mode = (DRIVER_IRQMASK & input->bit) ? IRQ_Mode_None : IRQ_Mode_Edges;
-#if SAFETY_DOOR_ENABLE
-            if(input->port == SAFETY_DOOR_PORT && input->pin == SAFETY_DOOR_PIN && input->cap.irq_mode != IRQ_Mode_None)
-                aux_ctrl[AuxCtrl_SafetyDoor].port = aux_inputs.n_pins - 1;
-#endif
-#if MOTOR_FAULT_ENABLE
-            if(input->port == MOTOR_FAULT_PORT && input->pin == MOTOR_FAULT_PIN && input->cap.irq_mode != IRQ_Mode_None)
-                aux_ctrl[AuxCtrl_MotorFault].port = aux_inputs.n_pins - 1;
-#endif
-#if MOTOR_WARNING_ENABLE
-            if(input->port == MOTOR_WARNING_PORT && input->pin == MOTOR_WARNING_PIN && input->cap.irq_mode != IRQ_Mode_None)
-                aux_control_port[AuxCtrl_MotorWarning] = aux_inputs.n_pins - 1;
-#endif
         } else if(input->group & (PinGroup_Limit|PinGroup_LimitMax)) {
             if(limit_inputs.pins.inputs == NULL)
                 limit_inputs.pins.inputs = input;
@@ -1913,33 +1805,8 @@ bool driver_init (void)
         }
     }
 
+  #ifdef HAS_IOPORTS
     ioports_init(&aux_inputs, &aux_outputs);
-
-  #if SAFETY_DOOR_ENABLE
-    aux_claim_explicit(&aux_ctrl[AuxCtrl_SafetyDoor]);
-  #elif defined(SAFETY_DOOR_PIN)
-    hal.signals_cap.safety_door = On;
-  #endif
-
-  #if MOTOR_FAULT_ENABLE
-    aux_claim_explicit(&aux_ctrl[AuxCtrl_MotorFault]);
-  #elif defined(MOTOR_FAULT_PIN)
-    hal.signals_cap.motor_fault = On;
-  #endif
-
-  #if MOTOR_WARNING_ENABLE
-    aux_claim_explicit(&aux_ctrl[AuxCtrl_MotorWarning]);
-  #elif defined(MOTOR_WARNING_PIN)
-    hal.signals_cap.motor_warning = On;
-  #endif
-
-  #if AUX_CONTROLS_ENABLED
-    for(i = AuxCtrl_ProbeDisconnect; i < AuxCtrl_NumEntries; i++) {
-        if(aux_ctrl[i].enabled) {
-            if((aux_ctrl[i].enabled = ioports_enumerate(Port_Digital, Port_Input, (pin_mode_t){ .irq_mode = aux_ctrl[i].irq_mode }, true, aux_claim, (void *)&aux_ctrl[i])))
-                hal.signals_cap.mask |= aux_ctrl[i].cap.mask;
-        }
-    }
   #endif
 
 #else
@@ -1955,10 +1822,6 @@ bool driver_init (void)
             limit_inputs.n_pins++;
         }
     }
-
-  #if SAFETY_DOOR_ENABLE
-    aux_ctrl[AuxCtrl_SafetyDoor].enabled = false; // stop compiler warning
-  #endif
 
 #endif // STM32F103xB
 
@@ -2031,6 +1894,16 @@ void PULSE_TIMER_IRQHandler (void)
         stepperSetStepOutputs((axes_signals_t){0}); // end step pulse
 }
 
+static inline bool debounce_start (void)
+{
+    if(hal.driver_cap.software_debounce) {
+        DEBOUNCE_TIMER->EGR = TIM_EGR_UG;
+        DEBOUNCE_TIMER->CR1 |= TIM_CR1_CEN; // Start debounce timer (40ms)
+    }
+
+    return hal.driver_cap.software_debounce;
+}
+
 // Debounce timer interrupt handler
 void DEBOUNCE_TIMER_IRQHandler (void)
 {
@@ -2045,13 +1918,9 @@ void DEBOUNCE_TIMER_IRQHandler (void)
 
     if(debounce.door) {
         debounce.door = Off;
-#if AUX_CONTROLS_ENABLED
-        aux_ctrl[AuxCtrl_SafetyDoor].debouncing = false;
-#else
         control_signals_t state = systemGetState();
         if(state.safety_door_ajar)
             hal.control.interrupt_callback(state);
-#endif
     }
 }
 
